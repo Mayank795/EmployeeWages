@@ -27,6 +27,7 @@ const calculateWagesTillCondition = () => {
     let totalWorkingHours = 0; // Initialize total working hours
     let totalWages = 0; // Initialize total wages
     let day = 0; // Initialize day counter
+    const dailyWages = []; // Array to store daily wages
 
     // Loop until either condition is met
     while (day < maxWorkingDays && totalWorkingHours < maxWorkingHours) {
@@ -35,13 +36,15 @@ const calculateWagesTillCondition = () => {
         const dailyWage = calculateDailyWage(workHours); // Calculate daily wage
         totalWorkingHours += workHours; // Add work hours to total
         totalWages += dailyWage; // Add daily wage to total wages
+        dailyWages.push(dailyWage); // Store daily wage in the array
 
         console.log(`Day ${day}: Work Hours: ${workHours}, Daily Wage: $${dailyWage}, Total Hours: ${totalWorkingHours}, Total Wages: $${totalWages}`);
     }
 
-    return { totalWorkingHours, totalWages, daysWorked: day }; // Return results
+    return { totalWorkingHours, totalWages, daysWorked: day, dailyWages }; // Return results
 };
 
 // Example usage
-const { totalWorkingHours, totalWages, daysWorked } = calculateWagesTillCondition();
+const { totalWorkingHours, totalWages, daysWorked, dailyWages } = calculateWagesTillCondition();
 console.log(`Total Working Hours: ${totalWorkingHours}, Total Wages: $${totalWages}, Days Worked: ${daysWorked}`);
+console.log("Daily Wages Array:", dailyWages);
