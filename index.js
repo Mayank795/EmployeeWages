@@ -1,50 +1,35 @@
-// Function to determine work hours based on random value
-const getWorkHours = () => {
-    const randomValue = Math.random(); // Generates a random number between 0 and 1
+// Sample dailyWages array (replace with actual data if needed)
+const dailyWages = [160, 80, 160, 0, 160, 80, 160, 160, 0, 160, 80, 160, 160, 80, 160, 160, 0, 160, 80, 160];
 
-    // Determine work hours using switch statement
-    switch (true) {
-        case randomValue < 0.3: // 30% chance of No Time (Absent)
-            return 0;
-        case randomValue < 0.6: // 30% chance of Part Time (4 hours)
-            return 4;
-        default: // 40% chance of Full Time (8 hours)
-            return 8;
-    }
-};
+// a. Calculate total wage using reduce
+const totalWage = dailyWages.reduce((total, wage) => total + wage, 0);
+console.log("Total Wage:", totalWage);
 
-// Function to calculate daily employee wage
-const calculateDailyWage = (workHours) => {
-    const wageRate = 20; // Wage rate per hour
-    const dailyWage = workHours * wageRate; // Calculate daily wage
-    return dailyWage;
-};
+// b. Show the day along with daily wage using map
+const dailyWageWithDay = dailyWages.map((wage, index) => ({
+    day: index + 1,
+    wage: wage
+}));
+console.log("Daily Wage with Day:", dailyWageWithDay);
 
-// Function to calculate wages until a condition is met
-const calculateWagesTillCondition = () => {
-    const maxWorkingDays = 20; // Maximum number of working days in a month
-    const maxWorkingHours = 160; // Maximum total working hours in a month
-    let totalWorkingHours = 0; // Initialize total working hours
-    let totalWages = 0; // Initialize total wages
-    let day = 0; // Initialize day counter
-    const dailyWages = []; // Array to store daily wages
+// c. Show days when full-time wage of 160 was earned using filter
+const fullTimeWageDays = dailyWages
+    .map((wage, index) => wage === 160 ? index + 1 : null)
+    .filter(day => day !== null);
+console.log("Days with Full-Time Wage (160):", fullTimeWageDays);
 
-    // Loop until either condition is met
-    while (day < maxWorkingDays && totalWorkingHours < maxWorkingHours) {
-        day++; // Increment day counter
-        const workHours = getWorkHours(); // Get work hours for the day
-        const dailyWage = calculateDailyWage(workHours); // Calculate daily wage
-        totalWorkingHours += workHours; // Add work hours to total
-        totalWages += dailyWage; // Add daily wage to total wages
-        dailyWages.push(dailyWage); // Store daily wage in the array
+// d. Find the first occurrence when Full-Time Wage was earned using find
+const firstFullTimeWageDay = dailyWages.findIndex(wage => wage === 160) + 1;
+console.log("First Full-Time Wage Day:", firstFullTimeWageDay);
 
-        console.log(`Day ${day}: Work Hours: ${workHours}, Daily Wage: $${dailyWage}, Total Hours: ${totalWorkingHours}, Total Wages: $${totalWages}`);
-    }
+// e. Check if every element of Full-Time Wage is truly holding Full-Time wage
+const isAllFullTimeWage = dailyWages.every(wage => wage === 160);
+console.log("Are all wages Full-Time (160)?", isAllFullTimeWage);
 
-    return { totalWorkingHours, totalWages, daysWorked: day, dailyWages }; // Return results
-};
+// f. Check if there is any Part-Time Wage
+const hasPartTimeWage = dailyWages.some(wage => wage < 160 && wage > 0);
+console.log("Is there any Part-Time Wage?", hasPartTimeWage);
 
-// Example usage
-const { totalWorkingHours, totalWages, daysWorked, dailyWages } = calculateWagesTillCondition();
-console.log(`Total Working Hours: ${totalWorkingHours}, Total Wages: $${totalWages}, Days Worked: ${daysWorked}`);
-console.log("Daily Wages Array:", dailyWages);
+// g. Find the number of days the Employee Worked
+const daysWorked = dailyWages.filter(wage => wage > 0).length;
+console.log("Number of Days Worked:", daysWorked);
