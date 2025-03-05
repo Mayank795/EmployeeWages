@@ -1,44 +1,41 @@
-// Function to check if the employee is present or absent
-const checkAttendance = () => {
+// Function to determine work hours based on random value
+const getWorkHours = () => {
     const randomValue = Math.random(); // Generates a random number between 0 and 1
-    let attendanceStatus; // Use let because this variable will be reassigned
 
-    if (randomValue < 0.5) {
-        attendanceStatus = "Absent";
-    } else {
-        attendanceStatus = "Present";
-    }
-
-    return attendanceStatus;
-};
-
-// Example usage
-const employeeStatus = checkAttendance(); // Use const because the result won't be reassigned
-console.log(`Employee is ${employeeStatus}`);
-
-// Function to calculate daily employee wage
-const calculateDailyWage = () => {
-    const randomValue = Math.random(); // Generates a random number between 0 and 1
-    let workHours; // Use let because this variable will be reassigned
-
-    // Determine work type using switch statement
+    // Determine work hours using switch statement
     switch (true) {
         case randomValue < 0.3: // 30% chance of No Time (Absent)
-            workHours = 0;
-            break;
+            return 0;
         case randomValue < 0.6: // 30% chance of Part Time (4 hours)
-            workHours = 4;
-            break;
+            return 4;
         default: // 40% chance of Full Time (8 hours)
-            workHours = 8;
-            break;
+            return 8;
     }
+};
 
+// Function to calculate daily employee wage
+const calculateDailyWage = (workHours) => {
     const wageRate = 20; // Wage rate per hour
     const dailyWage = workHours * wageRate; // Calculate daily wage
-    return { workHours, dailyWage };
+    return dailyWage;
+};
+
+// Function to calculate monthly wages
+const calculateMonthlyWages = () => {
+    const workingDays = 20; // Number of working days in a month
+    let totalWages = 0; // Initialize total wages for the month
+
+    for (let day = 1; day <= workingDays; day++) {
+        const workHours = getWorkHours(); // Get work hours for the day
+        const dailyWage = calculateDailyWage(workHours); // Calculate daily wage
+        totalWages += dailyWage; // Add daily wage to total wages
+
+        console.log(`Day ${day}: Work Hours: ${workHours}, Daily Wage: $${dailyWage}`);
+    }
+
+    return totalWages;
 };
 
 // Example usage
-const { workHours, dailyWage } = calculateDailyWage(); // Destructure the result
-console.log(`Work Hours: ${workHours}, Daily Wage: $${dailyWage}`);
+const monthlyWages = calculateMonthlyWages(); // Calculate total wages for the month
+console.log(`Total Monthly Wages: $${monthlyWages}`);
